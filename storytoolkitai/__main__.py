@@ -39,87 +39,87 @@ file_path = os.path.abspath(__file__)
 # the requirements file should be either one directory up from this file
 requirements_file_path = os.path.abspath(os.path.join(os.path.dirname(file_path), '..', 'requirements.txt'))
 
-# this makes sure that the user has all the required packages installed for the non-standalone app
-if not getattr(sys, 'frozen', False):
+# # this makes sure that the user has all the required packages installed for the non-standalone app
+# if not getattr(sys, 'frozen', False):
 
-    if not os.path.exists(requirements_file_path):
-        logger.warning('Could not find the requirements.txt file.')
+#     if not os.path.exists(requirements_file_path):
+#         logger.warning('Could not find the requirements.txt file.')
 
-    # check to see if all the requirements are met
-    requirements_failed = False
+#     # check to see if all the requirements are met
+#     requirements_failed = False
 
-    try:
+#     try:
 
-        # check if all the requirements are met
-        # important: this does not check if the correct versions of the packages are installed
-        # so if a specific version if required, we need to deal with it in the post_update() function
-        import pkg_resources
+#         # check if all the requirements are met
+#         # important: this does not check if the correct versions of the packages are installed
+#         # so if a specific version if required, we need to deal with it in the post_update() function
+#         import pkg_resources
 
-        pkg_resources.require(open(requirements_file_path, mode='r'))
+#         pkg_resources.require(open(requirements_file_path, mode='r'))
 
-        logger.debug('All package requirements met.')
+#         logger.debug('All package requirements met.')
 
-    except FileNotFoundError:
-        logger.error("Could not find {} to check the required packages" .format(requirements_file_path))
-        sys.exit()
+#     except FileNotFoundError:
+#         logger.error("Could not find {} to check the required packages" .format(requirements_file_path))
+#         sys.exit()
 
-    except pkg_resources.VersionConflict as e:
-        # log the error and show the warning
-        logger.debug("Version conflict in package:", exc_info=True)
-        logger.warning("Version conflict in package: {}".format(e))
-        requirements_failed = True
+#     except pkg_resources.VersionConflict as e:
+#         # log the error and show the warning
+#         logger.debug("Version conflict in package:", exc_info=True)
+#         logger.warning("Version conflict in package: {}".format(e))
+#         requirements_failed = True
 
-    except pkg_resources.DistributionNotFound as e:
-        # log the error and show the warning
-        logger.debug("Distribution not found for package:", exc_info=True)
-        logger.warning("Packages missing from the installation: {}".format(e))
-        requirements_failed = True
+#     except pkg_resources.DistributionNotFound as e:
+#         # log the error and show the warning
+#         logger.debug("Distribution not found for package:", exc_info=True)
+#         logger.warning("Packages missing from the installation: {}".format(e))
+#         requirements_failed = True
 
-    except:
-        # log the error and show the warning
-        logger.warning("There's something wrong with the packages installed in your Python environment:", exc_info=True)
-        requirements_failed = True
+#     except:
+#         # log the error and show the warning
+#         logger.warning("There's something wrong with the packages installed in your Python environment:", exc_info=True)
+#         requirements_failed = True
 
-    # no matter what, we need to check if the user has the correct version of Python installed
-    if requirements_failed:
+#     # no matter what, we need to check if the user has the correct version of Python installed
+#     if requirements_failed:
 
-        logger.warning('Some of the packages required to run StoryToolkitAI are missing from your Python environment.')
+#         logger.warning('Some of the packages required to run StoryToolkitAI are missing from your Python environment.')
 
-        # try to install the requirements automatically
-        logger.warning('Attempting to automatically install the missing packages...')
+#         # try to install the requirements automatically
+#         logger.warning('Attempting to automatically install the missing packages...')
 
-        # get the relative path to the requirements file
-        requirements_file_path_abs = os.path.abspath(requirements_file_path)
+#         # get the relative path to the requirements file
+#         requirements_file_path_abs = os.path.abspath(requirements_file_path)
 
-        # install the requirements
-        # invoke pip as a subprocess:
-        pip_complete = subprocess.call([sys.executable, '-m', 'pip', 'install', '-r', requirements_file_path_abs])
+#         # install the requirements
+#         # invoke pip as a subprocess:
+#         pip_complete = subprocess.call([sys.executable, '-m', 'pip', 'install', '-r', requirements_file_path_abs])
 
-        if pip_complete == 0:
-            logger.warning('The required packages were installed. Restarting StoryToolkitAI...')
+#         if pip_complete == 0:
+#             logger.warning('The required packages were installed. Restarting StoryToolkitAI...')
 
-            time.sleep(1)
+#             time.sleep(1)
 
-            try:
-                # restart the app while passing all the arguments
-                os.execl(sys.executable, sys.executable, *sys.argv)
-            except:
-                logger.error('Could not restart StoryToolkitAI. Please restart the app manually.')
+#             try:
+#                 # restart the app while passing all the arguments
+#                 os.execl(sys.executable, sys.executable, *sys.argv)
+#             except:
+#                 logger.error('Could not restart StoryToolkitAI. Please restart the app manually.')
 
 
-        else:
-            # let the user know that the automatic installation failed
-            logger.error(
-                'Could not auto-install the required packages. '
-                'StoryToolkitAI might not work properly without them. '
-                'To make sure that the right versions of the required packages are installed, '
-                'please close the tool and run:\n\n'
-                'pip install -r {} '
-                '\n\n'
-                .format(requirements_file_path_abs, APP_LOG_FILE))
+#         else:
+#             # let the user know that the automatic installation failed
+#             logger.error(
+#                 'Could not auto-install the required packages. '
+#                 'StoryToolkitAI might not work properly without them. '
+#                 'To make sure that the right versions of the required packages are installed, '
+#                 'please close the tool and run:\n\n'
+#                 'pip install -r {} '
+#                 '\n\n'
+#                 .format(requirements_file_path_abs, APP_LOG_FILE))
 
-        # keep this message in the console for a bit
-        time.sleep(2)
+#         # keep this message in the console for a bit
+#         time.sleep(2)
 
 from storytoolkitai.core.storytoolkitai import StoryToolkitAI
 

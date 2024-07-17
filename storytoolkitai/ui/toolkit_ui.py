@@ -1484,13 +1484,14 @@ class toolkit_UI():
 
             def before_exit(event=None):
 
-                show_support_popup(popup_title="One more thing!")
+                # show_support_popup(popup_title="One more thing!")
+                pass
 
             # redefine the on exit function
             self.before_exit = before_exit
 
-            if random.randint(0, 50) < 20:
-                self.root.after(random.randint(4000, 7000), show_support_popup, ["Thanks for using StoryToolkitAI!"])
+            # if random.randint(0, 50) < 20:
+                # self.root.after(random.randint(4000, 7000), show_support_popup, ["Thanks for using StoryToolkitAI!"])
 
         # wait for the update check to finish but in a different thread
         # so that the UI can load in the meantime
